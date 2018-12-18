@@ -1,1 +1,1 @@
-# nginx-php-supervisor  容器直接build 运行即可 
+# nginx-php-supervisor  容器直接build 并run运行即可 
