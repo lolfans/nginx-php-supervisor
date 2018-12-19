@@ -89,7 +89,7 @@ php -- --install-dir=/usr/bin/ --filename=composer
 
 # ensure www-data user exists
 RUN set -x \
-	&& addgroup -g 82 -S www-data \
+	&& addgroup -g 82  -S www-data \
 	&& adduser -u 82 -D -S -G www-data www-data
 
 # Mirror mirror switch to Alpine Linux - http://dl-4.alpinelinux.org/alpine/
@@ -103,14 +103,16 @@ RUN apk update \
 	&& apk del tzdata \
  	&& rm -rf /var/cache/apk/*
 
-RUN mkdir -p /usr/share/nginx/html
+RUN mkdir -p /usr/share/nginx/html/public
 RUN mkdir -p /usr/local/var/log/php7
 RUN mkdir -p /usr/local/var/run
 
-COPY ./php-fpm.conf /etc/php7/
-
-COPY ./www.conf /etc/php7/php-fpm.d/
-
+COPY ./php/php-fpm.conf /etc/php7/
+COPY ./php/www.conf /etc/php7/php-fpm.d/
+COPY ./php/index.php /usr/share/nginx/html/public
+COPY ./nginx/default.conf /etc/nginx/conf.d/
+COPY ./nginx/ssl.default.conf /etc/nginx/conf.d/
+COPY ./nginx/nginx.conf /etc/nginx/
 # Expose volumes
 VOLUME ["/usr/share/nginx/html", "/usr/local/var/log/php7", "/var/run/"]
 EXPOSE 9000
