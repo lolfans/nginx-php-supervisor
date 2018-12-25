@@ -132,4 +132,4 @@ VOLUME ["/etc/supervisor/conf.d", "/var/log/supervisor/"]
 WORKDIR /etc/supervisor/conf.d
 COPY ./supervisor/conf.d /etc/supervisor/conf.d
 
-CMD ["supervisord", "--nodaemon", "--configuration", "/etc/supervisor/conf.d/supervisord.conf"]
+ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisor/conf.d/supervisord.conf"]
