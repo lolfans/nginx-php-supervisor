@@ -1,4 +1,4 @@
-FROM registry.cn-qingdao.aliyuncs.com/liudashuai/nginx
+FROM liudashuai/docker-alpine-nginx:latest
 
 # Mirror mirror switch to Ali-OSM (Alibaba Open Source Mirror Site) - http://mirrors.aliyun.com/
 RUN echo 'http://mirrors.aliyun.com/alpine/latest-stable/main' > /etc/apk/repositories \
