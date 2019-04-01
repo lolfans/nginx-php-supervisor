@@ -58,12 +58,14 @@ RUN apk update \
 		php7-fileinfo@community \
 		php7-zmq@community \
 		php7-memcached@community \
+		php7-fpm@community \
 		php7-xmlreader@community \
  	&& cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 	&& echo "${TIMEZONE}" > /etc/timezone \
 	&& apk del tzdata \
  	&& rm -rf /var/cache/apk/*
 
+# Mirror mirror switch to Alpine Linux - http://dl-4.alpinelinux.org/alpine/
 # https://github.com/docker-library/php/issues/240
 # https://gist.github.com/guillemcanal/be3db96d3caa315b4e2b8259cab7d07e
 # https://forum.alpinelinux.org/forum/installation/php-iconv-issue
@@ -92,17 +94,6 @@ php -- --install-dir=/usr/bin/ --filename=composer
 RUN set -x \
 	&& addgroup -g 82  -S www-data \
 	&& adduser -u 82 -D -S -G www-data www-data
-
-# Mirror mirror switch to Alpine Linux - http://dl-4.alpinelinux.org/alpine/
-RUN apk update \
-	&& apk upgrade \
-	&& apk add \
-		tzdata \
-	    php7-fpm@community \
-	&& cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
-	&& echo "${TIMEZONE}" > /etc/timezone \
-	&& apk del tzdata \
- 	&& rm -rf /var/cache/apk/*
 
 RUN mkdir -p /usr/share/nginx/html/public
 RUN mkdir -p /usr/local/var/log/php7
