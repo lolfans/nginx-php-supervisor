@@ -122,5 +122,12 @@ VOLUME ["/etc/supervisor/conf.d", "/var/log/supervisor/"]
 # Define working directory.
 WORKDIR /etc/supervisor/conf.d
 COPY ./supervisor/conf.d /etc/supervisor/conf.d
+RUN chmod +x /usr/share/nginx/html/entrypoint.sh
+
+COPY ./crontabs/default /var/spool/cron/crontabs/
+RUN cat /var/spool/cron/crontabs/default >> /var/spool/cron/crontabs/root
+RUN mkdir -p /var/log/cron \
+	&& touch /var/log/cron/cron.log
+
 
 ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisor/conf.d/supervisord.conf"]
