@@ -19,8 +19,8 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 RUN apk update \
 	&& apk upgrade \
 	&& apk add \
-		curl \
-		tzdata \
+	    curl \
+ 	    tzdata \
 	    php7@community \
 	    php7-dev@community \
 	    php7-apcu@community \
@@ -54,12 +54,12 @@ RUN apk update \
 	    php7-redis@community\
 	    php7-tokenizer@community \
 	    php7-gd@community \
-		php7-mongodb@community \
-		php7-fileinfo@community \
-		php7-zmq@community \
-		php7-memcached@community \
-		php7-fpm@community \
-		php7-xmlreader@community \
+	    php7-mongodb@community \
+	    php7-fileinfo@community \
+	    php7-zmq@community \
+	    php7-memcached@community \
+	    php7-fpm@community \
+	    php7-xmlreader@community \
  	&& cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
 	&& echo "${TIMEZONE}" > /etc/timezone \
 	&& apk del tzdata \
@@ -91,9 +91,9 @@ php -- --install-dir=/usr/bin/ --filename=composer
 
 
 # ensure www-data user exists
-RUN set -x \
-	&& addgroup -g 82  -S www-data \
-	&& adduser -u 82 -D -S -G www-data www-data
+#RUN set -x \
+#	&& addgroup -g 82  -S www-data \
+#	&& adduser -u 82 -D -S -G www-data www-data
 
 RUN mkdir -p /usr/share/nginx/html/public
 RUN mkdir -p /usr/local/var/log/php7
@@ -105,6 +105,7 @@ COPY ./php/index.php /usr/share/nginx/html/public
 COPY ./nginx/default.conf /etc/nginx/conf.d/
 COPY ./nginx/ssl.default.conf /etc/nginx/conf.d/
 COPY ./nginx/nginx.conf /etc/nginx/
+
 # Expose volumes
 VOLUME ["/usr/share/nginx/html", "/usr/local/var/log/php7", "/var/run/"]
 EXPOSE 9000
@@ -112,9 +113,7 @@ WORKDIR /usr/share/nginx/html
 
 
 #SUPERVISOR
-RUN apk update \
-	&& apk upgrade \
-	&& apk add supervisor \
+RUN  apk add supervisor \
 	&& rm -rf /var/cache/apk/*
 
 # Define mountable directories.
