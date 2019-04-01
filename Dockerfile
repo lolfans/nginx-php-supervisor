@@ -3,7 +3,7 @@ FROM liudashuai/docker-alpine-nginx:latest
 # Mirror mirror switch to Ali-OSM (Alibaba Open Source Mirror Site) - http://mirrors.aliyun.com/
 RUN echo 'http://mirrors.aliyun.com/alpine/latest-stable/main' > /etc/apk/repositories \
 	&& echo '@community http://mirrors.aliyun.com/alpine/latest-stable/community' >> /etc/apk/repositories \
-	&& echo '@testing http://mirrors.aliyun.com/alpine/edge/testing' >> /etc/apk/repositories
+	&& echo '@community http://mirrors.aliyun.com/alpine/edge/community/' >> /etc/apk/repositories
 
 # https://github.com/matriphe/docker-alpine-php/blob/master/7.0/FPM/Dockerfile
 # Environments
@@ -70,8 +70,8 @@ RUN apk update \
 # https://gist.github.com/guillemcanal/be3db96d3caa315b4e2b8259cab7d07e
 # https://forum.alpinelinux.org/forum/installation/php-iconv-issue
 
-#RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing gnu-libiconv
-RUN apk add gnu-libiconv=1.15-r2 
+RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/x86_64 gnu-libiconv
+
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 RUN rm -rf /var/cache/apk/*
 
