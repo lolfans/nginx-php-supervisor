@@ -1,7 +1,7 @@
 FROM liudashuai/docker-alpine-nginx:latest
 
 # Mirror mirror switch to Ali-OSM (Alibaba Open Source Mirror Site) - http://mirrors.aliyun.com/
-RUN echo 'http://mirrors.aliyun.com/alpine/latest-stable/main' > /etc/apk/repositories \
+RUN    echo 'http://mirrors.aliyun.com/alpine/latest-stable/main' > /etc/apk/repositories \
 	&& echo '@community http://mirrors.aliyun.com/alpine/latest-stable/community' >> /etc/apk/repositories \
 	&& echo '@testing http://mirrors.aliyun.com/alpine/edge/testing/' >> /etc/apk/repositories
 
@@ -71,10 +71,8 @@ RUN apk update \
 # https://forum.alpinelinux.org/forum/installation/php-iconv-issue
 
 RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community gnu-libiconv
-
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
 RUN rm -rf /var/cache/apk/*
-
 
 # Set environments
 RUN sed -i "s|;*date.timezone =.*|date.timezone = ${TIMEZONE}|i" /etc/php7/php.ini && \
@@ -87,8 +85,6 @@ RUN sed -i "s|;*date.timezone =.*|date.timezone = ${TIMEZONE}|i" /etc/php7/php.i
 # composer
 RUN curl -sS https://getcomposer.org/installer | \
 php -- --install-dir=/usr/bin/ --filename=composer
-
-
 
 # ensure www-data user exists
 #RUN set -x \
@@ -109,8 +105,6 @@ COPY ./nginx/nginx.conf /etc/nginx/
 # Expose volumes
 VOLUME ["/usr/share/nginx/html", "/usr/local/var/log/php7", "/var/run/"]
 EXPOSE 9000
-WORKDIR /usr/share/nginx/html
-
 
 #SUPERVISOR
 RUN  apk add supervisor \
@@ -120,8 +114,8 @@ RUN  apk add supervisor \
 VOLUME ["/etc/supervisor/conf.d", "/var/log/supervisor/"]
 
 # Define working directory.
-WORKDIR /etc/supervisor/conf.d
-COPY ./supervisor/conf.d /etc/supervisor/conf.d
+COPY ./supervisor/conf.d/crond.conf /etc/supervisor/conf.d/
+COPY ./supervisor/conf.d/supervisord.conf /etc/supervisor/conf.d/
 RUN chmod +x /usr/share/nginx/html/entrypoint.sh
 
 COPY ./crontabs/default /var/spool/cron/crontabs/
@@ -129,5 +123,5 @@ RUN cat /var/spool/cron/crontabs/default >> /var/spool/cron/crontabs/root
 RUN mkdir -p /var/log/cron \
 	&& touch /var/log/cron/cron.log
 
-
+WORKDIR /usr/share/nginx/html
 ENTRYPOINT ["supervisord", "--nodaemon", "--configuration", "/etc/supervisor/conf.d/supervisord.conf"]
