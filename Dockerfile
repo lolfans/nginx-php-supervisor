@@ -86,11 +86,6 @@ RUN sed -i "s|;*date.timezone =.*|date.timezone = ${TIMEZONE}|i" /etc/php7/php.i
 RUN curl -sS https://getcomposer.org/installer | \
 php -- --install-dir=/usr/bin/ --filename=composer
 
-# ensure www-data user exists
-#RUN set -x \
-#	&& addgroup -g 82  -S www-data \
-#	&& adduser -u 82 -D -S -G www-data www-data
-
 RUN mkdir -p /usr/share/nginx/html/public
 RUN mkdir -p /usr/local/var/log/php7
 RUN mkdir -p /usr/local/var/run
@@ -115,9 +110,7 @@ VOLUME ["/etc/supervisor/conf.d", "/var/log/supervisor/"]
 
 # Define working directory.
 COPY ./supervisor/conf.d/crond.conf /etc/supervisor/conf.d/
-COPY ./supervisor/conf.d/supervisord.conf /etc/supervisor/conf.d/
-RUN chmod +x /usr/share/nginx/html/entrypoint.sh
-
+COPY ./supervisor/conf.d /etc/supervisor/conf.d
 COPY ./crontabs/default /var/spool/cron/crontabs/
 RUN cat /var/spool/cron/crontabs/default >> /var/spool/cron/crontabs/root
 RUN mkdir -p /var/log/cron \
