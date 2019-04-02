@@ -1,11 +1,10 @@
 FROM liudashuai/docker-alpine-nginx:latest
 
-# Mirror mirror switch to Ali-OSM (Alibaba Open Source Mirror Site) - http://mirrors.aliyun.com/
+RUN apk add --upgrade apk-tools
+
 RUN    echo 'http://mirrors.aliyun.com/alpine/latest-stable/main' > /etc/apk/repositories \
 	&& echo '@community http://mirrors.aliyun.com/alpine/latest-stable/community' >> /etc/apk/repositories \
-	&& echo '@testing http://mirrors.aliyun.com/alpine/edge/testing/' >> /etc/apk/repositories
 
-# https://github.com/matriphe/docker-alpine-php/blob/master/7.0/FPM/Dockerfile
 # Environments
 ENV TIMEZONE            Asia/Shanghai
 ENV PHP_MEMORY_LIMIT    512M
@@ -13,7 +12,6 @@ ENV MAX_UPLOAD          50M
 ENV PHP_MAX_FILE_UPLOAD 200
 ENV PHP_MAX_POST        100M
 ENV COMPOSER_ALLOW_SUPERUSER 1
-
 
 # Mirror mirror switch to Alpine Linux - http://dl-4.alpinelinux.org/alpine/
 RUN apk update \
@@ -60,10 +58,10 @@ RUN apk update \
 	    php7-memcached@community \
 	    php7-fpm@community \
 	    php7-xmlreader@community \
- 	&& cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
-	&& echo "${TIMEZONE}" > /etc/timezone \
-	&& apk del tzdata \
- 	&& rm -rf /var/cache/apk/*
+ 	    && cp /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
+	    && echo "${TIMEZONE}" > /etc/timezone \
+	    && apk del tzdata \
+ 	    && rm -rf /var/cache/apk/*
 
 # Mirror mirror switch to Alpine Linux - http://dl-4.alpinelinux.org/alpine/
 # https://github.com/docker-library/php/issues/240
