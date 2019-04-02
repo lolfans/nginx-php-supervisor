@@ -1,7 +1,5 @@
 FROM liudashuai/docker-alpine-nginx:latest
 
-RUN apk add --upgrade apk-tools
-
 RUN    echo 'http://mirrors.aliyun.com/alpine/latest-stable/main' > /etc/apk/repositories \
 	&& echo '@community http://mirrors.aliyun.com/alpine/latest-stable/community' >> /etc/apk/repositories \
 
