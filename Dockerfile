@@ -1,7 +1,8 @@
 FROM liudashuai/docker-alpine-nginx:latest
 
-RUN    echo 'http://mirrors.aliyun.com/alpine/latest-stable/main' > /etc/apk/repositories \
+RUN    	echo 'http://mirrors.aliyun.com/alpine/latest-stable/main' > /etc/apk/repositories \
 	&& echo '@community http://mirrors.aliyun.com/alpine/latest-stable/community' >> /etc/apk/repositories \
+	&& echo '@testing http://mirrors.aliyun.com/alpine/edge/testing' >> /etc/apk/repositories
 
 # Environments
 ENV TIMEZONE            Asia/Shanghai
