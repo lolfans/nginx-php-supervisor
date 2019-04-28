@@ -5,6 +5,7 @@ stages:
       dockerfilePath: ./Dockerfile
       buildContext: .
       tag: test-php-nginx
+      pushRemote: true
       registry: sandbox-images
 timeout: 60
 notification: {}
