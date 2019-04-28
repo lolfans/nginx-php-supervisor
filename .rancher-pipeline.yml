@@ -1,10 +1,20 @@
 stages:
 - name: shell
   steps:
+  - runScriptConfig:
+      image: php:latest
+      shellScript: echo 'hello world';
+- name: step2
+  steps:
   - publishImageConfig:
       dockerfilePath: ./Dockerfile
       buildContext: .
       tag: test-php-nginx
+      pushRemote: true
       registry: sandbox-images
+- name: step5
+  steps:
+  - applyYamlConfig:
+      path: ./deployment.yaml
 timeout: 300
 notification: {}
